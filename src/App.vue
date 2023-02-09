@@ -4,7 +4,7 @@ import { RouterView } from "vue-router";
 
 <template>
   <header>
-    <span>PokeList</span>
+    <strong>PokeList</strong>
   </header>
 
   <RouterView />
@@ -17,5 +17,11 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+strong {
+  font-size: large;
+  font-weight: 700;
+  color: white;
 }
 </style>
