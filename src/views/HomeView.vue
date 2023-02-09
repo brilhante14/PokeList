@@ -37,6 +37,30 @@ export default {
     getId(url: string) {
       return url.split("/")[6];
     },
+    getEvolutions(id: string) {
+      this.search = "";
+
+      axios
+        .get(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
+        .then((speciesResponse) => {
+          axios
+            .get(speciesResponse.data.evolution_chain.url)
+            .then((evolutionChainResponse) => {
+              let chain = evolutionChainResponse.data.chain;
+              const object = [
+                { ...chain.species, id: this.getId(chain.species.url) },
+              ] as IPokemonInfo[];
+              while (chain.evolves_to.length) {
+                object.push({
+                  ...chain.evolves_to[0].species,
+                  id: this.getId(chain.evolves_to[0].species.url),
+                });
+                chain = chain.evolves_to[0];
+              }
+              this.evolutionChain = object;
+            });
+        });
+    },
   },
 };
 </script>
@@ -50,7 +74,7 @@ export default {
           pokemon.name.includes(search)
         ).slice(0, 10)" :key="pokemon.name">
           <RouterLink to="/">
-            <div class="pokemonSearchCard">
+            <div class="pokemonSearchCard" @click="getEvolutions(pokemon.id)">
               <img :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`"
                 :alt="pokemon.name" />
               {{ formatName(pokemon.name) }}
@@ -60,6 +84,11 @@ export default {
       </div>
     </Transition>
 
+    <div v-for="pokemon in evolutionChain" :key="pokemon.name" class="">
+      <img :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`"
+        :alt="pokemon.name" />
+      {{ formatName(pokemon.name) }}
+    </div>
   </main>
 </template>
 
@@ -67,6 +96,7 @@ export default {
 main {
   display: flex;
   flex-direction: column;
+  /* justify-content: center; */
   align-items: center;
 }
 
