@@ -88,6 +88,17 @@ export default {
             </span>
 
             <div>
+               <strong class="infoTitle">Tipos</strong>
+               <span
+                  v-for="pokemonType in pokemonDetails.types"
+                  :key="pokemonType"
+                  :class="`pokemonTypes ${pokemonType}`"
+               >
+                  {{ formatName(pokemonType) }}
+               </span>
+            </div>
+
+            <div>
                <strong class="infoTitle">Características</strong>
                <div class="pokemonStats">
                   <span
@@ -163,6 +174,15 @@ main {
    color: antiquewhite;
 }
 
+.pokemonTypes {
+   color: #fff;
+   border: 2px solid #000;
+
+   border-radius: 20px;
+   padding: 4px 16px;
+   margin-left: 1rem;
+}
+
 .pokemonMeasures {
    display: flex;
 }
@@ -218,7 +238,7 @@ main {
       column-gap: 15px;
    }
 
-   .gridInfo { 
+   .gridInfo {
       font-size: small;
    }
 }
