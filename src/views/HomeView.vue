@@ -46,6 +46,7 @@ export default {
     },
     getEvolutions(id: string) {
       this.search = "";
+      this.evolutionDictionary = {};
 
       axios
         .get(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
