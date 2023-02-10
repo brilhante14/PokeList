@@ -131,6 +131,7 @@ main {
    flex-direction: column;
    align-items: center;
 }
+
 .searchBar {
    position: relative;
 }
@@ -193,5 +194,30 @@ input {
 .v-enter-from,
 .v-leave-to {
    opacity: 0;
+}
+
+@media (max-width: 850px) {
+   .pokemonEvolutionContainer {
+      max-width: 600px;
+      padding: 1rem;
+      overflow: auto;
+   }
+}
+
+@media (max-width: 600px) {
+   input {
+      width: 300px;
+   }
+
+   .pokemonSearchCard {
+      width: 300px;
+      border-radius: 8px;
+   }
+
+   .pokemonEvolutionContainer {
+      max-width: 300px;
+      padding: 0.25rem;
+      overflow: auto;
+   }
 }
 </style>

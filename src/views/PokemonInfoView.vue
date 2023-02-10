@@ -73,7 +73,7 @@ export default {
             <img
                class="pokemonImage"
                :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/${pokemonDetails.id}.png`"
-               :alt="pokemonDetails.name"
+               :alt="`${pokemonDetails.name} costas`"
             />
          </div>
 
@@ -88,7 +88,7 @@ export default {
             </span>
 
             <div>
-               <strong class="infoTitle">Stats</strong>
+               <strong class="infoTitle">Características</strong>
                <div class="pokemonStats">
                   <span
                      class="gridInfo"
@@ -100,7 +100,7 @@ export default {
                </div>
             </div>
             <div>
-               <strong class="infoTitle">Abilities</strong>
+               <strong class="infoTitle">Habilidades</strong>
                <div class="pokemonStats">
                   <span
                      class="gridInfo"
@@ -157,6 +157,7 @@ main {
    flex-direction: column;
    gap: 1.2rem;
 }
+
 .infoTitle {
    font-weight: bold;
    color: antiquewhite;
@@ -182,5 +183,43 @@ main {
 
 .gridInfo {
    color: black;
+}
+
+@media (max-width: 850px) {
+   .imageContainer {
+      flex-direction: row;
+   }
+
+   .pokemonContainer {
+      flex-direction: column;
+      gap: 2rem;
+   }
+}
+
+@media (max-width: 650px) {
+   .infoContainer {
+      width: 300px;
+   }
+
+   .imageContainer {
+      flex-direction: row;
+   }
+
+   .pokemonImage {
+      height: 100px;
+   }
+
+   .pokemonContainer {
+      flex-direction: column;
+      gap: 2rem;
+   }
+
+   .pokemonStats {
+      column-gap: 15px;
+   }
+
+   .gridInfo { 
+      font-size: small;
+   }
 }
 </style>
