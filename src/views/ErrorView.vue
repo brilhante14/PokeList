@@ -1,14 +1,16 @@
 <template>
    <div class="notFound">
-      <h1>Pokemon not found</h1>
+      <h1>Erro</h1>
+      <span>
+         Não achamos informações para essa URL, retorne para a página principal.
+      </span>
    </div>
 </template>
 
 <style>
 @media (min-width: 1024px) {
    .notFound {
-      display: flex;
-      align-items: center;
+      color: #fff;
    }
 }
 </style>
