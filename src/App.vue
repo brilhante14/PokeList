@@ -1,27 +1,29 @@
 <script lang="ts">
-import { RouterView } from "vue-router";
+import { RouterView, RouterLink } from "vue-router";
 </script>
 
 <template>
-  <header>
-    <strong>PokeList</strong>
-  </header>
+   <RouterLink to="/">
+      <header>
+         <strong>PokeList</strong>
+      </header>
+   </RouterLink>
 
-  <RouterView />
+   <RouterView />
 </template>
 
 <style scoped>
 header {
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+   width: 100%;
+   margin: 0 auto;
+   display: flex;
+   justify-content: center;
+   align-items: center;
 }
 
 strong {
-  font-size: large;
-  font-weight: 700;
-  color: white;
+   font-size: large;
+   font-weight: 700;
+   color: white;
 }
 </style>

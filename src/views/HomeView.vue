@@ -106,7 +106,7 @@ export default {
          class="pokemonEvolutionContainer"
       >
          <RouterLink
-            to="/"
+            :to="`/pokemon/${pokemon.id}`"
             v-for="pokemon in evolutionDictionary[evolutionLevel as unknown as keyof IEvolutionDictionary]"
             :key="pokemon.id"
          >
@@ -129,7 +129,6 @@ main {
    flex-direction: column;
    align-items: center;
 }
-
 .searchBar {
    position: relative;
 }
