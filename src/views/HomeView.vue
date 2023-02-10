@@ -1,7 +1,6 @@
 <script lang="ts">
 import { usePokemonsStore } from '@/stores/pokemons';
 import axios from 'axios';
-import TheWelcome from '../components/TheWelcome.vue'
 
 interface IPokemonInfo {
   name: string;
@@ -9,8 +8,17 @@ interface IPokemonInfo {
   id: string;
 }
 
+interface IEvolutionChain {
+  level: number;
+  specie: IPokemonInfo;
+  evolvesTo: IEvolutionChain[];
+}
+
+interface IEvolutionDictionary {
+  [level: number]: IPokemonInfo[];
+}
+
 export default {
-  name: "App",
   setup() {
     const store = usePokemonsStore();
 
@@ -18,10 +26,9 @@ export default {
       store,
     };
   },
-  components: {},
   data: () => ({
     search: "",
-    evolutionChain: [] as IPokemonInfo[],
+    evolutionDictionary: {} as IEvolutionDictionary,
   }),
   mounted() {
     axios
@@ -47,17 +54,23 @@ export default {
             .get(speciesResponse.data.evolution_chain.url)
             .then((evolutionChainResponse) => {
               let chain = evolutionChainResponse.data.chain;
-              const object = [
+              let level = 0;
+
+              this.evolutionDictionary[level] = [
                 { ...chain.species, id: this.getId(chain.species.url) },
-              ] as IPokemonInfo[];
+              ];
+
               while (chain.evolves_to.length) {
-                object.push({
-                  ...chain.evolves_to[0].species,
-                  id: this.getId(chain.evolves_to[0].species.url),
+                level++;
+                this.evolutionDictionary[level] = [];
+                chain.evolves_to.forEach((evolution: any) => {
+                  this.evolutionDictionary[level].push({
+                    ...evolution.species,
+                    id: this.getId(evolution.species.url),
+                  });
                 });
                 chain = chain.evolves_to[0];
               }
-              this.evolutionChain = object;
             });
         });
     },
@@ -67,27 +80,34 @@ export default {
 
 <template>
   <main>
-    <input placeholder="Digite sua busca" v-model="search" />
-    <Transition>
-      <div v-if="search" class="pokemonSearchContainer">
-        <div v-for="pokemon in store.pokemons.filter((pokemon) =>
-          pokemon.name.includes(search)
-        ).slice(0, 10)" :key="pokemon.name">
-          <RouterLink to="/">
+    <div class="searchBar">
+      <input placeholder="Digite sua busca" v-model="search" />
+      <Transition>
+        <div v-if="search" class="pokemonSearchContainer">
+          <div v-for="pokemon in store.pokemons.filter((pokemon) =>
+            pokemon.name.includes(search)
+          ).slice(0, 10)" :key="pokemon.name">
             <div class="pokemonSearchCard" @click="getEvolutions(pokemon.id)">
               <img :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`"
                 :alt="pokemon.name" />
               {{ formatName(pokemon.name) }}
             </div>
-          </RouterLink>
+          </div>
         </div>
-      </div>
-    </Transition>
+      </Transition>
+    </div>
 
-    <div v-for="pokemon in evolutionChain" :key="pokemon.name" class="">
-      <img :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`"
-        :alt="pokemon.name" />
-      {{ formatName(pokemon.name) }}
+    <div v-for="evolutionLevel in Object.keys(evolutionDictionary)" :key="evolutionLevel"
+      class="pokemonEvolutionContainer">
+      <RouterLink to="/" v-for="pokemon in evolutionDictionary[evolutionLevel as unknown as keyof IEvolutionDictionary]"
+        :key="pokemon.id">
+        <div class="pokemonEvolutionCard">
+          <img :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`"
+            :alt="pokemon.name" />
+          {{ formatName(pokemon.name) }}
+          <EvolutionCards :evolutionChain="pokemon" />
+        </div>
+      </RouterLink>
     </div>
   </main>
 </template>
@@ -96,28 +116,60 @@ export default {
 main {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
 }
 
-.pokemonSearchContainer {
-  margin-top: 0.2rem;
-  height: 280px;
-  border-radius: 8px;
-  overflow-y: auto;
-  overflow-x: hidden;
+.searchBar {
+  position: relative;
 }
 
-.pokemonGrid {
-  line-height: 1.5;
-  max-height: 100vh;
-  display: grid;
-  grid-template: "auto auto auto auto";
-  align-items: stretch;
-  justify-items: center;
-  gap: 6rem;
-  margin: 6rem auto 0;
-  width: 1200px;
+.pokemonSearchContainer {
+  position: absolute;
+  top: 100%;
+
+  max-height: 300px;
+  border-radius: 8px;
+  margin-top: 0.2rem;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1;
+}
+
+.pokemonSearchCard {
+  height: 100px;
+  cursor: pointer;
+  width: 500px;
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: rgb(184, 69, 117);
+}
+
+.pokemonEvolutionContainer {
+  display: flex;
+  margin-top: 2rem;
+  gap: 1.5rem;
+}
+
+.pokemonEvolutionCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+}
+
+input {
+  width: 500px;
+  margin-top: 2rem;
+  outline: none;
+  border-radius: 8px;
+  height: 37px;
 }
 
 .v-enter-active,
@@ -128,29 +180,5 @@ main {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
-}
-
-.card {
-  height: 100px;
-  width: 1000px;
-  margin-bottom: 0.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: rgb(184, 69, 117);
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-input {
-  width: 1000px;
-  margin-top: 2rem;
-  outline: none;
-  border-radius: 8px;
-  height: 37px;
 }
 </style>
