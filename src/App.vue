@@ -1,10 +1,17 @@
 <script lang="ts">
-import { RouterView, RouterLink } from "vue-router";
+/// <reference types="vite-svg-loader" />
+import IconComponent from "./assets/headerIcon.svg?component";
+export default {
+   components: {
+      IconComponent,
+   },
+};
 </script>
 
 <template>
    <RouterLink to="/">
       <header>
+         <IconComponent width="50" height="50" />
          <strong>PokeList</strong>
       </header>
    </RouterLink>
@@ -19,6 +26,7 @@ header {
    display: flex;
    justify-content: center;
    align-items: center;
+   gap: 1rem;
 }
 
 strong {

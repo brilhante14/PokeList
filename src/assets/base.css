@@ -23,9 +23,9 @@
 
 /* semantic color variables for this project */
 :root {
-  --color-background: #0F2027;  /* fallback for old browsers */
-  --color-background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-  --color-background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  --color-background: #1cb5e0;  /* fallback for old browsers */
+  --color-background: -webkit-linear-gradient(to right, #000046, #1cb5e0);  /* Chrome 10-25, Safari 5.1-6 */
+  --color-background: linear-gradient(to right, #000046, #1cb5e0);  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);

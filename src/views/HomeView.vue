@@ -81,7 +81,9 @@ export default {
             <div v-if="search" class="pokemonSearchContainer">
                <div
                   v-for="pokemon in store.pokemons
-                     .filter((pokemon) => pokemon.name.includes(search))
+                     .filter((pokemon) =>
+                        pokemon.name.includes(search.toLowerCase())
+                     )
                      .slice(0, 10)"
                   :key="pokemon.name"
                >
@@ -155,7 +157,8 @@ main {
    align-items: center;
    justify-content: center;
 
-   background-color: rgb(184, 69, 117);
+   color: antiquewhite;
+   background: linear-gradient(to top, #36d1dc, #5b86e5);
 }
 
 .pokemonEvolutionContainer {
