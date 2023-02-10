@@ -151,6 +151,7 @@ main {
    flex-direction: column;
    justify-content: center;
    align-items: center;
+
    border: 1px solid grey;
 }
 
@@ -159,14 +160,15 @@ main {
 }
 
 .infoContainer {
-   width: 625px;
-   border: 1px solid grey;
-   border-radius: 8px;
-   padding: 1rem;
-
    display: flex;
    flex-direction: column;
    gap: 1.2rem;
+
+   width: 625px;
+   padding: 1rem;
+
+   border: 1px solid grey;
+   border-radius: 8px;
 }
 
 .infoTitle {
@@ -176,9 +178,10 @@ main {
 
 .pokemonTypes {
    color: #fff;
-   border: 2px solid #000;
 
+   border: 2px solid #000;
    border-radius: 20px;
+
    padding: 4px 16px;
    margin-left: 1rem;
 }
@@ -216,7 +219,7 @@ main {
    }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 600px) {
    .infoContainer {
       width: 300px;
    }
