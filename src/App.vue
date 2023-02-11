@@ -10,17 +10,17 @@ export default {
 
 <template>
    <RouterLink to="/">
-      <header>
+      <button class="header">
          <IconComponent width="50" height="50" />
          <strong>PokeList</strong>
-      </header>
+      </button>
    </RouterLink>
 
    <RouterView />
 </template>
 
 <style scoped>
-header {
+.header {
    width: 100%;
    margin: 0 auto;
    display: flex;

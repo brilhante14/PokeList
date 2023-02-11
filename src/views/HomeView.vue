@@ -79,25 +79,22 @@ export default {
          <input placeholder="Digite sua busca" v-model="search" />
          <Transition>
             <div v-if="search" class="pokemonSearchContainer">
-               <div
+               <button
                   v-for="pokemon in store.pokemons
                      .filter((pokemon) =>
                         pokemon.name.includes(search.toLowerCase())
                      )
                      .slice(0, 10)"
                   :key="pokemon.name"
+                  class="pokemonSearchCard"
+                  @click="getEvolutions(pokemon.id)"
                >
-                  <div
-                     class="pokemonSearchCard"
-                     @click="getEvolutions(pokemon.id)"
-                  >
                      <img
                         :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`"
                         :alt="pokemon.name"
                      />
                      {{ formatName(pokemon.name) }}
-                  </div>
-               </div>
+                  </button>
             </div>
          </Transition>
       </div>
@@ -112,14 +109,14 @@ export default {
             v-for="pokemon in evolutionDictionary[evolutionLevel as unknown as keyof IEvolutionDictionary]"
             :key="pokemon.id"
          >
-            <div class="pokemonEvolutionCard">
+            <button class="pokemonEvolutionCard">
                <img
                   :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`"
                   :alt="pokemon.name"
                />
                {{ formatName(pokemon.name) }}
                <EvolutionCards :evolutionChain="pokemon" />
-            </div>
+            </button>
          </RouterLink>
       </div>
    </main>
@@ -130,6 +127,15 @@ main {
    display: flex;
    flex-direction: column;
    align-items: center;
+}
+
+input {
+   width: 500px;
+   margin-top: 2rem;
+   outline: none;
+   border: none;
+   border-radius: 8px;
+   height: 37px;
 }
 
 .searchBar {
@@ -177,14 +183,6 @@ main {
    background-color: rgba(255, 255, 255, 0.2);
    border-radius: 8px;
    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-input {
-   width: 500px;
-   margin-top: 2rem;
-   outline: none;
-   border-radius: 8px;
-   height: 37px;
 }
 
 .v-enter-active,
